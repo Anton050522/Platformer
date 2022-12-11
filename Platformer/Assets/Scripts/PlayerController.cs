@@ -4,116 +4,130 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody2D rb;
-    Animator animator;
-    SpriteRenderer sprite;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private FinishController finish;
+    private LevelSword levelSword;
 
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
-    [SerializeField] Transform groundCheck;
-    [SerializeField] GameObject attackHitBox;
-    [SerializeField] GameObject blockBox;
 
-    bool isGrounded;
-    bool isAttacking = false;   
-    bool isBlocked = false; 
+    [SerializeField] Animator chestAnimator;
+
+
+    private float _horizontal = 0f; 
+    private bool _isGrounded = false;
+    private bool _isJump = false;
+    private bool _isFlip = false;
+    private bool _isFinish = false;
+    private bool _isLevelSword = false;
+    
+
+    const float speedXMultiplier = 50f;
     
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
-        attackHitBox.SetActive(false);
-        blockBox.SetActive(false);  
+        finish = GameObject.FindGameObjectWithTag("Finish").GetComponent<FinishController>();
+        levelSword = FindObjectOfType<LevelSword>();//Ищет на сцене объект с именем LevelSword
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !isAttacking)
+       _horizontal = Input.GetAxis("Horizontal");
+        animator.SetFloat("speed", Mathf.Abs(_horizontal));
+        
+        if (Input.GetKey(KeyCode.Space) && _isGrounded)
         {
-            isAttacking = true;
-
-            int choose = Random.Range(1, 3);
-            animator.Play("Player_attack" + choose);
-
-            StartCoroutine(DoAttack());
+            _isJump = true;
         }
-        else if (Input.GetButton("Fire2") && !isAttacking)
+
+        if (Input.GetKey(KeyCode.E)) 
         {
-            isAttacking = true;
-
-            animator.Play("Player_block");
-
-            StartCoroutine(DoBlock());
+            if (_isFinish)  
+            {
+                finish.FinishLevel();
+            }
+            if (_isLevelSword)
+            {
+                levelSword.ActivateLevelSword();
+            }
         }
     }
+
     private void FixedUpdate()
     {
-        if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
-        {
-            isGrounded = true;
-        }
-        else if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("GameObject")))
-        {
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
+       rb.velocity = new Vector2(_horizontal * speed * speedXMultiplier * Time.fixedDeltaTime, rb.velocity.y);
 
-
-        if (Input.GetKey(KeyCode.D))
+        if (_isJump)
         {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
-            if (isGrounded && !isAttacking)
-                animator.Play("Player_run");
-
-            transform.localScale = new Vector3(1,1,1); 
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
-            if (isGrounded && !isAttacking)
-                animator.Play("Player_run");
-
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            if (isGrounded)
-            {
-                if (!isAttacking)
-                {
-                    animator.Play("Player_idle");
-                }
-            }
-               
-        }
-
-
-        if (Input.GetKey(KeyCode.Space) && isGrounded == true)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.AddForce(new Vector2(0f, jumpForce));
             animator.Play("Player_jump");
+            _isGrounded = false;
+            _isJump = false;
+        }
+
+        if (_horizontal > 0f && _isFlip)
+        {
+            Flip();
+        }
+        else if (_horizontal < 0f && !_isFlip)
+        {
+            Flip();
+        }
+    }
+    void Flip()
+    {
+        _isFlip = !_isFlip;
+        Vector3 playerScale = transform.localScale;
+        playerScale.x *= -1;
+        transform.localScale = playerScale;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded=true;
+            animator.Play("Player_idle");
+        }
+        else
+        {
+            animator.Play("Player_idle");
         }
     }
 
-    IEnumerator DoAttack()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        attackHitBox.SetActive(true);
-        yield return new WaitForSeconds(.5f);
-        attackHitBox.SetActive(false);
-        isAttacking = false;
+        LevelSword levelSwordTemp = collision.GetComponent<LevelSword>();    
+
+        if (collision.CompareTag("Finish"))
+        {
+            Debug.Log("Нажмите E");
+            _isFinish = true;
+        }
+        if (levelSwordTemp != null)
+        {
+            Debug.Log("Вы нашли ключ");
+            _isLevelSword = true;
+        }
     }
 
-    IEnumerator DoBlock()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        blockBox.SetActive(true);
-        yield return new WaitForSeconds(.5f);
-        blockBox.SetActive(false);
-        isAttacking = false;
+        LevelSword levelSwordTemp = collision.GetComponent<LevelSword>();
+
+        if (collision.CompareTag("Finish"))
+        {
+            Debug.Log("Вы отошли от Финиша");
+            _isFinish = false;
+            chestAnimator.Play("CloseCh");
+        }
+        if (levelSwordTemp != null)
+        {
+            _isLevelSword = false;
+        }
     }
 }

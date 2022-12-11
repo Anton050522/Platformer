@@ -1,0 +1,271 @@
+fileFormatVersion: 2
+guid: 9d100d189ea71ff4caa7f401a6956b94
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RainDrop_0
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 401
+        width: 153
+        height: 299
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dc1628583053834996bf5974451953c
+      internalID: -2024863597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RainDrop_3
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 412
+        width: 255
+        height: 234
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fca8aaac552f14f46b69c94dee9074b7
+      internalID: 1849090598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RainDrop_28
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 215
+        width: 452
+        height: 163
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2550963481146c84c90dc0ecafd48aef
+      internalID: 950266340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RainDrop_44
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 70
+        width: 472
+        height: 118
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 041caa75bb3f1aa41b2416198903a994
+      internalID: -1939471698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      RainDrop_25: -235874925
+      RainDrop_37: -1479249657
+      RainDrop_45: -1792621823
+      RainDrop_43: 2007094818
+      RainDrop_46: 554908187
+      RainDrop_10: -2086026606
+      RainDrop_12: 521808834
+      RainDrop_28: 950266340
+      RainDrop_6: 145418808
+      RainDrop_41: -570684547
+      RainDrop_11: -934678166
+      RainDrop_20: 1868657953
+      RainDrop_50: 512945802
+      RainDrop_19: 669906769
+      RainDrop_24: -1298933371
+      RainDrop_27: 1197068847
+      RainDrop_9: -1078178486
+      RainDrop_34: -1468051449
+      RainDrop_26: -705329559
+      RainDrop_22: 67891487
+      RainDrop_36: -1818350096
+      RainDrop_15: -439953909
+      RainDrop_30: -1099467442
+      RainDrop_13: -370172933
+      RainDrop_17: -600492518
+      RainDrop_35: 2007846829
+      RainDrop_48: -1402258947
+      RainDrop_32: -1730626512
+      RainDrop_18: 1697547152
+      RainDrop_33: 1302477014
+      RainDrop_16: 358115806
+      RainDrop_23: 1192152333
+      RainDrop_47: -1581422225
+      RainDrop_44: -1939471698
+      RainDrop_42: 1998851090
+      RainDrop_51: -248370258
+      RainDrop_38: 2135014093
+      RainDrop_14: -288035610
+      RainDrop_2: 1291794829
+      RainDrop_5: 547465161
+      RainDrop_7: 423366162
+      RainDrop_8: 1583514306
+      RainDrop_1: -604595277
+      RainDrop_31: -1091986750
+      RainDrop_40: 824719746
+      RainDrop_3: 1849090598
+      RainDrop_0: -2024863597
+      RainDrop_49: 1696561226
+      RainDrop_21: 1100919031
+      RainDrop_39: 2134322858
+      RainDrop_4: 1780479052
+      RainDrop_52: -1067165612
+      RainDrop_29: 313429111
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
