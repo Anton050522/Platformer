@@ -18,10 +18,12 @@ public class Weapon : MonoBehaviour
     private Vector2 _direction;
 
     private float _currentHitDistance;
+    private float _multiplier = 1f;
 
-    public void EnemyInRange()
+    public void EnemyInRange(bool isLeft)
     {
-        _origin = transform.position + Vector3.right * offsetX;
+        _multiplier = isLeft ? -1 : 1;
+        _origin = transform.position + Vector3.right * offsetX * _multiplier;
         RaycastHit2D[] hits = new RaycastHit2D[10];
 
         hits = Physics2D.BoxCastAll(_origin, size, angle, _direction, maxDistance, enemyLayer);

@@ -10,10 +10,13 @@ public class AttackController : MonoBehaviour
 
     [SerializeField] private Weapon weapon;
 
+    PlayerController _playerController;
+
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+        _playerController = GetComponent<PlayerController>();   
     }
     public bool IsAttack
     {
@@ -26,7 +29,7 @@ public class AttackController : MonoBehaviour
         {
             
             _isAttack = true;
-            weapon.EnemyInRange();
+            weapon.EnemyInRange(_playerController.IsFlip);
             animator.SetTrigger("attack");
         } 
     }

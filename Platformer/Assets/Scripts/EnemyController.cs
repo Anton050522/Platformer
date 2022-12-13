@@ -8,8 +8,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float _patrolSpeed = 1f;
     [SerializeField] private float _timeToChase = 2f;
     [SerializeField] private float _chasingSpeed = 3f;
-
-    private readonly float _minDistancePlayer = 1f; 
     
     private float _waitTime;
     private float _timeToWait;    
@@ -19,6 +17,7 @@ public class EnemyController : MonoBehaviour
     private bool _isFacingRight = true;
     private bool _isWait = false;
     private bool _isChanginPlayer;
+    private bool _collidedWithPlayer;
 
     private Transform _playerTransform;
     private Rigidbody2D _rb;
@@ -63,7 +62,7 @@ public class EnemyController : MonoBehaviour
         if (_isWait && !_isChanginPlayer)
         {
             StartWaitTimer();
-            _animator.Play("Enemy_idle");
+           // _animator.Play("Enemy_idle");
         }
         if (ShouldWait())
         {
@@ -76,9 +75,9 @@ public class EnemyController : MonoBehaviour
     {
         _nextPoint = Vector2.right * _walkSpeed * Time.fixedDeltaTime;
 
-        if (_isChanginPlayer && Mathf.Abs(DistaceToPlayer()) < _minDistancePlayer)
+        if (_isChanginPlayer && _collidedWithPlayer)
         {
-            _animator.Play("Enemy_idle"); 
+           // _animator.Play("Enemy_idle"); 
             return;
         }
 
@@ -106,7 +105,7 @@ public class EnemyController : MonoBehaviour
             _nextPoint.x *= -1;
         }
         _rb.MovePosition((Vector2)transform.position + _nextPoint);
-        _animator.Play("Enemy_run");
+        //_animator.Play("Enemy_run");
     }
 
     private void ChasePlayer()
@@ -126,7 +125,7 @@ public class EnemyController : MonoBehaviour
             Flip();
         }
         _rb.MovePosition((Vector2)transform.position + _nextPoint);
-        _animator.Play("Enemy_run");
+       // _animator.Play("Enemy_run");
     }
 
     void Flip()
@@ -170,5 +169,24 @@ public class EnemyController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(_leftBoundaryPositin, _rightBounfaryPosition);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+
+        if (playerController != null)
+        {
+            _collidedWithPlayer = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+
+        if (playerController != null)
+        {
+            _collidedWithPlayer = false;
+        }
     }
 }

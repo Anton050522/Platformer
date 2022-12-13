@@ -14,7 +14,6 @@ public class EnemyHealth : MonoBehaviour
 
     public void ReduceHealth(float damage)
     {
-
         _health -= damage;
         _animator.SetTrigger("takeDamage");
         if (_health <= 0f)
