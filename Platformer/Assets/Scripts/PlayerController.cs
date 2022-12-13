@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     
 
     const float speedXMultiplier = 50f;
+
+    public bool IsFlip => _isFlip;
     
 
     private void Start()
