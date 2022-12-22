@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField] private Transform enemyModelTransfor;
+
     [SerializeField] private float _walkDistance = 6f;
     [SerializeField] private float _patrolSpeed = 1f;
     [SerializeField] private float _timeToChase = 2f;
-    [SerializeField] private float _chasingSpeed = 3f;
+    [SerializeField] private float _chasingSpeed = 3f;    
     
     private float _waitTime;
     private float _timeToWait;    
