@@ -6,12 +6,15 @@ public class FinishController : MonoBehaviour
 {
     private bool _isActivated = false;
 
-    Animator animator;
+    [SerializeField] private GameObject levelCompleteCanvas;
+    [SerializeField] private GameObject _finischHintCanvas;
+
+    private Animator animator;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-    }
+    }    
     public void Activate()
     {
         _isActivated = true;    
@@ -21,12 +24,13 @@ public class FinishController : MonoBehaviour
     {
         if (_isActivated)
         {
-            //gameObject.SetActive(false);
             animator.Play("OpenCh");
+            levelCompleteCanvas.SetActive(true);
+            Time.timeScale = 0f;
         }
         else
         {
-            Debug.Log("Найдите ключ");
+            _finischHintCanvas.SetActive(true);
         }
     }
 }

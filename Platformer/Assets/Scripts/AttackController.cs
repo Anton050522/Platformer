@@ -6,16 +6,15 @@ public class AttackController : MonoBehaviour
 {
     private bool _isAttack;
 
-    private Animator animator;
+    [SerializeField] private Animator _atackAnimator;
 
     [SerializeField] private Weapon weapon;
+    [SerializeField] private AudioSource _atackSound;
 
     PlayerController _playerController;
 
-
     private void Start()
     {
-        animator = GetComponent<Animator>();
         _playerController = GetComponent<PlayerController>();   
     }
     public bool IsAttack
@@ -27,16 +26,15 @@ public class AttackController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            
             _isAttack = true;
             weapon.EnemyInRange(_playerController.IsFlip);
-            animator.SetTrigger("attack");
+            _atackAnimator.SetTrigger("attack");
+            _atackSound.Play();
         } 
     }
 
     public void FinishAttack()
     {
         _isAttack = false; 
-       
     }
 }

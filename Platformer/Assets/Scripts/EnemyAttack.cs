@@ -5,16 +5,14 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] private float _damage = 20f;
-    [SerializeField] private float _timeToDamage = 3f;
+    [SerializeField] private float _timeToDamage = 1.5f;
+    [SerializeField] Animator animator;
 
     private float _damageTime;
     private bool _isDamage = true;
 
-    private Animator animator;
-
     private void Start()
     {
-        animator = GetComponent<Animator>();
         _damageTime = _timeToDamage;
     }
 
@@ -37,7 +35,7 @@ public class EnemyAttack : MonoBehaviour
 
         if (playerHealth != null && _isDamage)
         {
-            //animator.SetTrigger("isAttack");
+            animator.SetTrigger("attack");
             playerHealth.ReduceHealth(_damage);
             _isDamage = false;
 

@@ -1,60 +1,80 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
+
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private Animator animator;
     private FinishController finish;
-    private LevelSword levelSword;
+    private LevelKey levelKey;
+    private FakeKey fakeKey;
+    private LevelArm levelArm;
 
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
 
     [SerializeField] Animator chestAnimator;
+    [SerializeField] Animator _playerAnimator;
+    [SerializeField] private AudioSource _jumpSound;
+    [SerializeField] private Transform _playerModelTransform;
 
+    [SerializeField] private GameObject _pressECanvas; // нажмите Е
+    [SerializeField] private GameObject _finischHintCanvas; // при открытии финиша
+    [SerializeField] private GameObject _hintOpenLadderCanvas; // мы открыли мост
 
     private float _horizontal = 0f; 
     private bool _isGrounded = false;
     private bool _isJump = false;
     private bool _isFlip = false;
     private bool _isFinish = false;
-    private bool _isLevelSword = false;
-    
+    private bool _isLevelkey = false;
+    private bool _isFakeKey = false;
+    private bool _isLevelArm = false;
 
     const float speedXMultiplier = 50f;
 
     public bool IsFlip => _isFlip;
     
-
     private void Start()
     {
-        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         finish = GameObject.FindGameObjectWithTag("Finish").GetComponent<FinishController>();
-        levelSword = FindObjectOfType<LevelSword>();//Ищет на сцене объект с именем LevelSword
+        levelKey = FindObjectOfType<LevelKey>();//Ищет на сцене объект с именем LevelSword
+        fakeKey = FindObjectOfType<FakeKey>();
+        levelArm = FindObjectOfType<LevelArm>();
     }
 
     private void Update()
     {
        _horizontal = Input.GetAxis("Horizontal");
-        animator.SetFloat("speed", Mathf.Abs(_horizontal));
-        
-        if (Input.GetKey(KeyCode.Space) && _isGrounded)
+        _playerAnimator.SetFloat("speed", Mathf.Abs(_horizontal));
+
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
             _isJump = true;
+            _jumpSound.Play();
         }
 
-        if (Input.GetKey(KeyCode.E)) 
+        if (Input.GetKeyDown(KeyCode.E)) 
         {
             if (_isFinish)  
             {
                 finish.FinishLevel();
             }
-            if (_isLevelSword)
+            if (_isLevelkey)
             {
-                levelSword.ActivateLevelSword();
+                levelKey.ActivateLevelKey();
+            }
+            if (_isFakeKey)
+            {
+                fakeKey.ActivateFakeKey();
+            }
+            if (_isLevelArm)
+            {
+                levelArm.ActivateLevelArm();
             }
         }
     }
@@ -66,7 +86,7 @@ public class PlayerController : MonoBehaviour
         if (_isJump)
         {
             rb.AddForce(new Vector2(0f, jumpForce));
-            animator.Play("Player_jump");
+            _playerAnimator.Play("Player_jump");
             _isGrounded = false;
             _isJump = false;
         }
@@ -83,9 +103,9 @@ public class PlayerController : MonoBehaviour
     void Flip()
     {
         _isFlip = !_isFlip;
-        Vector3 playerScale = transform.localScale;
+        Vector3 playerScale = _playerModelTransform.localScale;
         playerScale.x *= -1;
-        transform.localScale = playerScale;
+        _playerModelTransform.localScale = playerScale;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -93,43 +113,74 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             _isGrounded=true;
-            animator.Play("Player_idle");
+            _playerAnimator.Play("Player_idle");
         }
         else
         {
-            animator.Play("Player_idle");
+            _playerAnimator.Play("Player_idle");
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        LevelSword levelSwordTemp = collision.GetComponent<LevelSword>();    
+        LevelKey levelKeyTemp = collision.GetComponent<LevelKey>();  
+        FakeKey fakeKey = collision.GetComponent<FakeKey>();
+        LevelArm levelArm = collision.GetComponent<LevelArm>();
 
         if (collision.CompareTag("Finish"))
         {
-            Debug.Log("Нажмите E");
+            Debug.Log("Вы рядом с финишом\nНажмите E");
+            _pressECanvas.SetActive(true);
             _isFinish = true;
         }
-        if (levelSwordTemp != null)
+        if (levelKeyTemp != null)
         {
-            Debug.Log("Вы нашли ключ");
-            _isLevelSword = true;
+            Debug.Log("Вы нашли ключ. \n Нажмите Е");
+            _pressECanvas.SetActive(true);
+            _isLevelkey = true;
+        }
+        if (fakeKey != null)
+        {
+            Debug.Log("Вы нашли ключ. \n Нажмите Е");
+            _pressECanvas.SetActive(true);
+            _isFakeKey = true;
+        }
+        if (levelArm != null)
+        {
+            Debug.Log("Вы нашли Переключатель. \n Нажмите Е");
+            _pressECanvas.SetActive(true);
+            _isLevelArm = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        LevelSword levelSwordTemp = collision.GetComponent<LevelSword>();
+        LevelKey levelSwordTemp = collision.GetComponent<LevelKey>();
+        FakeKey fakeKey = collision.GetComponent<FakeKey>();
+        LevelArm levelArm = collision.GetComponent<LevelArm>();
 
         if (collision.CompareTag("Finish"))
         {
-            Debug.Log("Вы отошли от Финиша");
+            _finischHintCanvas.SetActive(false);
             _isFinish = false;
+            _pressECanvas.SetActive(false);
             chestAnimator.Play("CloseCh");
         }
         if (levelSwordTemp != null)
         {
-            _isLevelSword = false;
+            _pressECanvas.SetActive(false);
+            _isLevelkey = false;
+        }
+        if (fakeKey != null)
+        {
+            _pressECanvas.SetActive(false);
+            _isFakeKey = false;
+        }
+        if (levelArm != null)
+        {
+            _hintOpenLadderCanvas.SetActive(false);
+            _pressECanvas.SetActive(false);
+            _isLevelArm = false;
         }
     }
 }

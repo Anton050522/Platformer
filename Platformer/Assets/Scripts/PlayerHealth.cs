@@ -7,21 +7,24 @@ public class PlayerHealth : MonoBehaviour
 {
    [SerializeField] private float totalHealth = 100f;
    [SerializeField] private Slider healthSlider;
+   [SerializeField] private GameObject gameObjectCanvas;
+
+   [SerializeField] private AudioSource _hitSound;
 
     private float _health;
-    private Animator _animator;
+    [SerializeField] private Animator _playerHitAnimator;
 
     private void Start()
     {
-        _animator = GetComponent<Animator>();
         _health = totalHealth;
         InitHealth();
     }
     public void ReduceHealth(float damage)
     {
+        _hitSound.Play();
         _health -= damage;
         InitHealth();
-        _animator.SetTrigger("takeDamage");
+        _playerHitAnimator.SetTrigger("takeDamage");
         if (_health <= 0f)
         {
             Die();
@@ -35,5 +38,6 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         gameObject.SetActive(false);
+        gameObjectCanvas.SetActive(true);  
     }
 }

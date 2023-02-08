@@ -9,8 +9,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float _walkDistance = 6f;
     [SerializeField] private float _patrolSpeed = 1f;
     [SerializeField] private float _timeToChase = 2f;
-    [SerializeField] private float _chasingSpeed = 3f;    
-    
+    [SerializeField] private float _chasingSpeed = 3f;
+    [SerializeField] Animator _animator;
+
     private float _waitTime;
     private float _timeToWait;    
     private float _chaseTime;
@@ -23,7 +24,6 @@ public class EnemyController : MonoBehaviour
 
     private Transform _playerTransform;
     private Rigidbody2D _rb;
-    private Animator _animator;
     private Vector2 _leftBoundaryPositin;
     private Vector2 _rightBounfaryPosition;
     private Vector2 _nextPoint;
@@ -42,7 +42,6 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
         _playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         _leftBoundaryPositin = transform.position;
@@ -52,7 +51,6 @@ public class EnemyController : MonoBehaviour
         _waitTime = _timeToWait;
         _chaseTime = _timeToChase;
         _walkSpeed = _patrolSpeed;
-
     }
 
     private void Update()
@@ -64,12 +62,13 @@ public class EnemyController : MonoBehaviour
         if (_isWait && !_isChanginPlayer)
         {
             StartWaitTimer();
-           // _animator.Play("Enemy_idle");
+            
         }
         if (ShouldWait())
         {
             _isWait = true;
-            
+
+            _animator.SetTrigger("idle");
         }
     }
 
@@ -79,14 +78,12 @@ public class EnemyController : MonoBehaviour
 
         if (_isChanginPlayer && _collidedWithPlayer)
         {
-           // _animator.Play("Enemy_idle"); 
             return;
         }
 
         if (_isChanginPlayer)
         {
             ChasePlayer();
-            //_animator.Play("Enemy_run");
         }
 
         if (!_isWait && !_isChanginPlayer)
@@ -107,7 +104,7 @@ public class EnemyController : MonoBehaviour
             _nextPoint.x *= -1;
         }
         _rb.MovePosition((Vector2)transform.position + _nextPoint);
-        //_animator.Play("Enemy_run");
+        _animator.Play("Enemy_run");
     }
 
     private void ChasePlayer()
@@ -127,15 +124,15 @@ public class EnemyController : MonoBehaviour
             Flip();
         }
         _rb.MovePosition((Vector2)transform.position + _nextPoint);
-       // _animator.Play("Enemy_run");
+        _animator.Play("Enemy_run");
     }
 
     void Flip()
     {
         _isFacingRight = !_isFacingRight;
-        Vector3 playerScale = transform.localScale;
+        Vector3 playerScale = enemyModelTransfor.localScale;
         playerScale.x *= -1;
-        transform.localScale = playerScale;
+        enemyModelTransfor.localScale = playerScale;
     }
     private void StartWaitTimer()
     {
@@ -164,6 +161,7 @@ public class EnemyController : MonoBehaviour
         bool isOutOfRightBoundary = _isFacingRight && transform.position.x >= _rightBounfaryPosition.x;
         bool isOutLeftBoundary = !_isFacingRight && transform.position.x <= _leftBoundaryPositin.x;
 
+        //_animator.SetTrigger("idle");
         return isOutOfRightBoundary || isOutLeftBoundary;
     }
 
